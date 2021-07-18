@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import App from "./App"
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+import { ThemeProvider } from './theme';
+import { AppProvider } from './provider/app_provider';
+initializeIcons();
 
 ReactDOM.render(
   <React.StrictMode>
+  <ThemeProvider>
+    <AppProvider>
     <App />
+    </AppProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
