@@ -1,12 +1,11 @@
-import React from 'react'
-import { Layer, makeStyles, DetailsHeader, CommandButton, IconButton } from "@fluentui/react"
-import SweetDialog from "./../logo/logo"
+import { CommandButton, IconButton, makeStyles, Persona, PersonaSize } from "@fluentui/react";
+import React from 'react';
 import useApp from '../../provider/app_provider';
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        // padding: theme.spacing,
+        padding: theme.spacing,
         "position": "absolute",
         top: 0,
         width: "100%",
@@ -14,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         "flexDirection": "row",
         "alignItems": "center",
         "verticalAlign": "middle",
-        backgroundColor: theme.palette.neutralLight
+        backgroundColor: theme.palette.neutralLight,
     },
     branding: {
         width: "300px",
@@ -28,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         flex: 1,
         display: "flex",
-
         justifyContent: "flex-end"
     }
 }))
 
 export default function Navbar() {
-    const { toggleChat } = useApp();
+    const { toggleChat, logOut, user } = useApp();
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -44,16 +42,17 @@ export default function Navbar() {
                 <h4 className={classes.title}>Bot</h4>
             </div>
             <div className={classes.toolbar}>
-                <CommandButton iconProps={{ iconName: "Contact" }} menuProps={{
-                    items: [
-
-                        {
-                            key: 'Logout',
-                            text: 'Logout',
-                            //   iconProps: { iconName: 'Calendar' },
-                        },
-                    ],
-                }} />
+                <CommandButton
+                    menuProps={{
+                        items: [
+                            {
+                                key: 'Logout',
+                                text: 'Logout',
+                                onClick: logOut
+                                //   iconProps: { iconName: 'Calendar' },
+                            },
+                        ],
+                    }}><Persona style={{width: PersonaSize.size32}} size={PersonaSize.size32} imageUrl={user?.photoURL}></Persona></CommandButton>
             </div>
         </div>
     )

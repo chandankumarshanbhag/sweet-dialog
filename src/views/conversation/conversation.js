@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
-import { FontIcon } from '@fluentui/react/lib/Icon';
-import { TextField, IconButton, makeStyles, CommandButton, ActivityItem, Link, Grid, } from "@fluentui/react";
-import { Layer, DetailsHeader } from "@fluentui/react"
-import SweetDialog from "../../components/logo/logo"
-import Navbar from "../../components/navbar/navbar"
-import Chat from "./../../components/chat/chat"
+import { CommandButton, IconButton, makeStyles, TextField } from "@fluentui/react";
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import GoogleSignin from "../../components/google_signin/google_signin";
+import Navbar from "../../components/navbar/navbar";
+import useApp from "../../provider/app_provider";
+import Chat from "./../../components/chat/chat";
 
 
 const useStyles = makeStyles((theme) => {
@@ -27,7 +26,9 @@ const useStyles = makeStyles((theme) => {
         },
         chats: {
             flex: 1,
-            minHeight: "100%",
+            paddingTop: "51px",
+            paddingBottom: "80px",
+            height: "100%",
             overflowX: "hidden",
             overflowY: "auto",
         },
@@ -38,9 +39,11 @@ const useStyles = makeStyles((theme) => {
             "display": "flex",
             "flexDirection": "row",
             width: "100%",
-            padding: theme.spacing*2,
+            padding: theme.spacing * 2,
+            backgroundColor: theme.palette.neutralLight,
+            boxShadow: theme.effects.elevation4,
             float: "left"
-            
+
         },
         languageSelector: {
             // width: 60
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => {
 
 export default function Conversation() {
     const [message, setMessage] = useState("");
+    const { user } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
     })
@@ -62,10 +66,13 @@ export default function Conversation() {
         <div className={classes.root} style={{ width: isTabletOrMobileDevice ? "100vw" : "50vw" }}>
             <Navbar />
             <div className={classes.chats}>
-                <Chat />
-                <Chat />
-                <Chat />
-                <Chat />
+                {user == null ? <GoogleSignin /> : <div>
+
+                    <Chat />
+                    <Chat />
+                    <Chat />
+                    <Chat />
+                </div>}
 
             </div>
             <div className={classes.chatContainer}>
