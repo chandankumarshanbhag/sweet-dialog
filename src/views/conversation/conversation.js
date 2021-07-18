@@ -1,4 +1,5 @@
-import { CommandButton, IconButton, makeStyles, TextField } from "@fluentui/react";
+import { CommandButton, IconButton, makeStyles, TextField, useTheme } from "@fluentui/react";
+import EmojiPicker from "emoji-picker-react";
 import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import GoogleSignin from "../../components/google_signin/google_signin";
@@ -51,12 +52,22 @@ const useStyles = makeStyles((theme) => {
         sendButton: {
             width: 40,
             paddingRight: 8,
+        },
+        emojiPicker: {
+            height: 240,
+            width: "100%",
+            position: "absolute",
+            bottom: 80
         }
     });
 })
 
+let inputRef = React.createRef();
+
 export default function Conversation() {
+    const theme = useTheme();
     const [message, setMessage] = useState("");
+    const [emojiPicker, setEmojiPicker] = useState(false)
     const { user } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
@@ -77,6 +88,7 @@ export default function Conversation() {
             </div>
             <div className={classes.chatContainer}>
                 <TextField className={classes.textField}
+                    elementRef={inputRef}
                     multiline
                     rows={2}
                     placeholder="Type your message"
@@ -86,7 +98,7 @@ export default function Conversation() {
                     }}
                     suffix={
                         <div>
-                            <IconButton iconProps={{ iconName: "Emoji" }}></IconButton>
+                            <IconButton iconProps={{ iconName: "Emoji", onClick: () => setEmojiPicker(!emojiPicker) }}></IconButton>
                             <IconButton iconProps={{ iconName: "Microphone" }}></IconButton>
                         </div>
                     }></TextField>
@@ -110,6 +122,12 @@ export default function Conversation() {
                     <IconButton iconProps={{ iconName: "Send" }}></IconButton>
                 </div>
             </div>
+            {emojiPicker && <div className={classes.emojiPicker}>
+                <EmojiPicker disableAutoFocus native={true} pickerStyle={{ width: "100%", height: "100%" }} onEmojiClick={(e, data) => {
+                    inputRef.current.focus();
+                    setMessage(message + data.emoji)
+                }} />
+            </div>}
         </div>
     )
 }
