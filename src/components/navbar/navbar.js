@@ -6,7 +6,7 @@ import useApp from '../../provider/app_provider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        padding: theme.spacing,
+        // padding: theme.spacing,
         "position": "absolute",
         top: 0,
         width: "100%",

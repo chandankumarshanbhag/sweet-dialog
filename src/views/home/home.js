@@ -49,26 +49,26 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Home() {
-    let { toggleTheme } = useUI();
+    let { toggleTheme, darkTheme } = useUI();
     const classes = useStyles();
-    const { toggleChat } = useApp();
+    const { toggleChat, } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
     })
     return (
-        <div style={{ height: "100%", overflowX: "hidden", overflowY: "auto" }}>
+        <div style={{ height: "100%", width: "100%", overflowX: "hidden", overflowY: "auto" }}>
             <div className={classes.root} style={{ minHeight: isTabletOrMobileDevice ? 840 : 600 }}>
 
                 <div className={classNamesFunction.branding}>
                     <img src={GifLogo} className={classes.logo} />
                     <h2 style={{ textAlign: "center" }}>Sweet Dialog</h2>
                 </div>
-                {isTabletOrMobileDevice && <PrimaryButton onClick={toggleChat} color="primary" iconProps={{ iconName: "Send" }} className={classes.fab}>Chat</PrimaryButton>}
+                {isTabletOrMobileDevice && <PrimaryButton checked={darkTheme} onClick={toggleChat} color="primary" iconProps={{ iconName: "Send" }} className={classes.fab}>Chat</PrimaryButton>}
                 <div className={classes.techstack}>
                     <TechStack />
                 </div>
                 <div className={classes.content}><Toggle label="Dark mode" inlineLabel onChange={(a, checked) => toggleTheme()} /> </div>
-                <div><p>Developed by <strong><Link>Chandan Kumar</Link></strong></p></div>
+                <div><p>Developed by <strong><Link href="https://shanbhag.dev" target="_blank">Chandan Kumar</Link></strong></p></div>
             </div>
         </div>
     )

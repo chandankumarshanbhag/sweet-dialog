@@ -7,14 +7,15 @@ const UIContext = createContext();
 export function ThemeProvider(props) {
     const [darkTheme, setDarkTheme] = useState(false);
     function toggleTheme() {
-        if(!darkTheme){
-            document.body.classList.add("dark");
-        }else{
-            document.body.classList.remove("dark");
-        }
+        
+        // if(!darkTheme){
+        //     document.body.classList.add("dark");
+        // }else{
+        //     document.body.classList.remove("dark");
+        // }
         setDarkTheme(!darkTheme);
     }
-    return <UIContext.Provider value={{ toggleTheme }}><FluentUIThemeProvider style={{width: "100%",height: "100%"}} theme={darkTheme ? DarkTheme : LightTheme}>{props.children}</FluentUIThemeProvider></UIContext.Provider>
+    return <UIContext.Provider value={{ toggleTheme,darkTheme }}><FluentUIThemeProvider style={{width: "100%",height: "100%"}} theme={darkTheme ? DarkTheme : LightTheme}>{props.children}</FluentUIThemeProvider></UIContext.Provider>
 }
 
 export default function useUI() {
