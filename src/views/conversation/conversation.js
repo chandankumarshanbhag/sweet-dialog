@@ -6,7 +6,7 @@ import GoogleSignin from "../../components/google_signin/google_signin";
 import Navbar from "../../components/navbar/navbar";
 import useApp from "../../provider/app_provider";
 import Chat from "./../../components/chat/chat";
-import firebase,{appConfig} from "./../../utils/firebase";
+import firebase, { appConfig } from "./../../utils/firebase";
 
 
 const useStyles = makeStyles((theme) => {
@@ -69,15 +69,21 @@ export default function Conversation() {
     const theme = useTheme();
     const [message, setMessage] = useState("");
     const [emojiPicker, setEmojiPicker] = useState(false)
-    const { user, conversations } = useApp();
+    const { user, conversations, addChat } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
     })
     const classes = useStyles();
 
     async function sendMessage() {
+
         if (message) {
-            let response = await fetch(`https://us-central1-${appConfig.projectId}.cloudfunctions.net/sweetDialogBot`, {
+            addChat({
+                message: message,
+                isChatbot: false,
+                timestamp: new Date()
+            });
+            fetch(`https://us-central1-${appConfig.projectId}.cloudfunctions.net/sweetDialogBot`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -87,7 +93,20 @@ export default function Conversation() {
                     "message": "hello",
                     "sessionId": "abc123"
                 })
-            });
+            })
+                .then(res => {
+                    if (res.ok && res.status == 200) {
+                        return res.text();
+                    }
+                    throw "Message not sent"
+                })
+                .then((chatbotResponse) => {
+                    addChat({
+                        message: chatbotResponse,
+                        isChatbot: true,
+                        timestamp: new Date()
+                    });
+                });
         }
     }
     return (
@@ -95,7 +114,7 @@ export default function Conversation() {
             <Navbar />
             <div className={classes.chats}>
                 {user == null ? <GoogleSignin /> : <div>
-                    {conversations?.map(x => <Chat {...x} />)}
+                    {conversations?.map((x, key) => <Chat {...x} key={x.timestamp.toString()} />)}
                 </div>}
 
             </div>

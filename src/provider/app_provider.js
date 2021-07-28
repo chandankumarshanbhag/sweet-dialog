@@ -13,6 +13,13 @@ export function AppProvider(props) {
         }
     ]);
 
+    function addChat(chat) {
+        let chats = [...conversations, chat];
+        setConversations(chats);
+        console.log(chats);
+
+    }
+
     function logOut() {
         setUser(null);
         firebase.auth().signOut();
@@ -38,7 +45,7 @@ export function AppProvider(props) {
     function toggleChat() {
         setChatOpen(!chatOpen);
     }
-    return <AppContext.Provider value={{ toggleChat, isChatOpen: chatOpen, user, logOut,conversations }}>{props.children}</AppContext.Provider>
+    return <AppContext.Provider value={{ toggleChat, isChatOpen: chatOpen, user, logOut, conversations, addChat }}>{props.children}</AppContext.Provider>
 }
 
 export default function useApp() {
