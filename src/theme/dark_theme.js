@@ -24,7 +24,11 @@ export default createTheme({
         themeDarkAlt: '#4ba0e1',
         themeDark: '#65aee6',
         themeDarker: '#8ac2ec',
-        accent: '#3a96dd'
+        accent: '#3a96dd',
+
+    },
+    defaultFontStyle: {
+        color: "#fff !important"
     },
     spacing: 4
 });

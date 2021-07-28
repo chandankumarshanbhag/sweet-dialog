@@ -5,4 +5,6 @@ let app = firebase.initializeApp(firebaseConfig);
 
 app.analytics();
 
+export const appConfig = firebaseConfig;
+
 export default app;

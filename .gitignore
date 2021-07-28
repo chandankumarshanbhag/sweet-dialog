@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/firebase.config.json
+sweet-dialog-firebase-adminsdk-fojcc-22f61a3477.json
+/functions/sweet-dialog-firebase-adminsdk-fojcc-22f61a3477.json

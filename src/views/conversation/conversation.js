@@ -6,6 +6,7 @@ import GoogleSignin from "../../components/google_signin/google_signin";
 import Navbar from "../../components/navbar/navbar";
 import useApp from "../../provider/app_provider";
 import Chat from "./../../components/chat/chat";
+import firebase,{appConfig} from "./../../utils/firebase";
 
 
 const useStyles = makeStyles((theme) => {
@@ -68,21 +69,33 @@ export default function Conversation() {
     const theme = useTheme();
     const [message, setMessage] = useState("");
     const [emojiPicker, setEmojiPicker] = useState(false)
-    const { user } = useApp();
+    const { user, conversations } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
     })
     const classes = useStyles();
+
+    async function sendMessage() {
+        if (message) {
+            let response = await fetch(`https://us-central1-${appConfig.projectId}.cloudfunctions.net/sweetDialogBot`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "message": "hello",
+                    "sessionId": "abc123"
+                })
+            });
+        }
+    }
     return (
         <div className={classes.root} style={{ width: isTabletOrMobileDevice ? "100vw" : "50vw" }}>
             <Navbar />
             <div className={classes.chats}>
                 {user == null ? <GoogleSignin /> : <div>
-
-                    <Chat />
-                    <Chat />
-                    <Chat />
-                    <Chat />
+                    {conversations?.map(x => <Chat {...x} />)}
                 </div>}
 
             </div>
@@ -119,7 +132,7 @@ export default function Conversation() {
                     }} />
                 </div>}
                 <div className={classes.sendButton}>
-                    <IconButton iconProps={{ iconName: "Send" }}></IconButton>
+                    <IconButton iconProps={{ iconName: "Send" }} onClick={sendMessage}></IconButton>
                 </div>
             </div>
             {emojiPicker && <div className={classes.emojiPicker}>
