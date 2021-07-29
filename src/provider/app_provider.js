@@ -4,10 +4,11 @@ const AppContext = createContext();
 
 export function AppProvider(props) {
     const [chatOpen, setChatOpen] = useState(false);
+    const [conversationLoading, setConversationLoading] = useState(false);
     const [user, setUser] = useState(null);
     const [conversations, setConversations] = useState([
         {
-            message: "Hi hello",
+            message: "Hi 👋",
             isChatbot: true,
             timestamp: new Date()
         }
@@ -43,7 +44,7 @@ export function AppProvider(props) {
     function toggleChat() {
         setChatOpen(!chatOpen);
     }
-    return <AppContext.Provider value={{ toggleChat, isChatOpen: chatOpen, user, logOut, conversations, addChat }}>{props.children}</AppContext.Provider>
+    return <AppContext.Provider value={{ toggleChat, isChatOpen: chatOpen, user, logOut, conversations, addChat,conversationLoading, setConversationLoading }}>{props.children}</AppContext.Provider>
 }
 
 export default function useApp() {

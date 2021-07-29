@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => {
             boxShadow: theme.effects.elevation8,
             animationName: "slideInRight",
             animationDuration: ".4s",
-            backgroundColor: theme.palette.neutralLighter,
+            // backgroundColor: theme.palette.neutralLighterAlt,
+            backgroundColor: "transparent",
+            backdropFilter: "blur(20px)",
             overflow: "hidden"
         },
         textField: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => {
             height: "100%",
             overflowX: "hidden",
             overflowY: "auto",
+            
         },
         chatContainer: {
             position: "absolute",
@@ -69,7 +72,7 @@ export default function Conversation() {
     const theme = useTheme();
     const [message, setMessage] = useState("");
     const [emojiPicker, setEmojiPicker] = useState(false)
-    const { user, conversations, addChat } = useApp();
+    const { user, conversations, addChat, conversationLoading, setConversationLoading } = useApp();
     const isTabletOrMobileDevice = useMediaQuery({
         query: '(max-device-width: 1224px)'
     })
@@ -88,6 +91,7 @@ export default function Conversation() {
                 isChatbot: false,
                 timestamp: new Date()
             });
+            setConversationLoading(true)
             scrollToBottom();
             fetch(`https://us-central1-${appConfig.projectId}.cloudfunctions.net/sweetDialogBot`, {
                 method: 'POST',
@@ -107,13 +111,15 @@ export default function Conversation() {
                     throw "Message not sent"
                 })
                 .then((chatbotResponse) => {
+                    setConversationLoading(false)
                     addChat({
                         message: chatbotResponse,
                         isChatbot: true,
                         timestamp: new Date()
                     });
                     scrollToBottom();
-                });
+                }).catch(e =>
+                    setConversationLoading(false));
         }
     }
     return (
@@ -122,7 +128,9 @@ export default function Conversation() {
             <div className={classes.chats} ref={chatContainerRef}>
                 {user == null ? <GoogleSignin /> : <div>
                     {conversations?.map((x, key) => <Chat {...x} key={x.timestamp.valueOf()} />)}
+
                 </div>}
+                {conversationLoading && <Chat loading key="loader" />}
                 <div style={{ height: "140px" }}></div>
             </div>
             <div className={classes.chatContainer}>
