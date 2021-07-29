@@ -12,7 +12,6 @@ import firebase, { appConfig } from "./../../utils/firebase";
 const useStyles = makeStyles((theme) => {
     return ({
         root: {
-            height: "100vh",
             width: "50vw",
             display: "block",
             position: "relative",
@@ -63,7 +62,8 @@ const useStyles = makeStyles((theme) => {
     });
 })
 
-let inputRef = React.createRef();
+const inputRef = React.createRef();
+const chatContainerRef = React.createRef();
 
 export default function Conversation() {
     const theme = useTheme();
@@ -75,6 +75,10 @@ export default function Conversation() {
     })
     const classes = useStyles();
 
+    function scrollToBottom() {
+        chatContainerRef?.current?.scrollTo(0, chatContainerRef.current.scrollHeight);
+    }
+
     async function sendMessage() {
 
         if (message) {
@@ -84,6 +88,7 @@ export default function Conversation() {
                 isChatbot: false,
                 timestamp: new Date()
             });
+            scrollToBottom();
             fetch(`https://us-central1-${appConfig.projectId}.cloudfunctions.net/sweetDialogBot`, {
                 method: 'POST',
                 headers: {
@@ -107,17 +112,18 @@ export default function Conversation() {
                         isChatbot: true,
                         timestamp: new Date()
                     });
+                    scrollToBottom();
                 });
         }
     }
     return (
-        <div className={classes.root} style={{ width: isTabletOrMobileDevice ? "100vw" : "50vw" }}>
+        <div className={classes.root} style={{ width: isTabletOrMobileDevice ? "100%" : "50vw" }}>
             <Navbar />
-            <div className={classes.chats}>
+            <div className={classes.chats} ref={chatContainerRef}>
                 {user == null ? <GoogleSignin /> : <div>
                     {conversations?.map((x, key) => <Chat {...x} key={x.timestamp.valueOf()} />)}
                 </div>}
-
+                <div style={{ height: "140px" }}></div>
             </div>
             <div className={classes.chatContainer}>
                 <TextField className={classes.textField}

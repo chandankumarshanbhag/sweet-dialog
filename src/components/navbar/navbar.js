@@ -5,6 +5,7 @@ import useApp from '../../provider/app_provider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        zIndex: 999,
         padding: theme.spacing,
         "position": "absolute",
         top: 0,
@@ -52,7 +53,7 @@ export default function Navbar() {
                                 //   iconProps: { iconName: 'Calendar' },
                             },
                         ],
-                    }}><Persona style={{width: PersonaSize.size32}} size={PersonaSize.size32} imageUrl={user?.photoURL}></Persona></CommandButton>
+                    }}><Persona style={{ width: PersonaSize.size32 }} size={PersonaSize.size32} imageUrl={user?.photoURL}></Persona></CommandButton>
             </div>
         </div>
     )

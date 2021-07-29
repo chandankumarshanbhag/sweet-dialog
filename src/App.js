@@ -5,13 +5,13 @@ import Home from "./views/home/home";
 import Navbar from "./components/navbar/navbar"
 import Logo from "./components/logo/logo"
 import { useMediaQuery } from "react-responsive";
-import useApp, {AppProvider} from "./provider/app_provider"
+import useApp, { AppProvider } from "./provider/app_provider"
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: "100% !important",
+    height: "100vh !important",
     backgroundColor: theme.palette.neutralLighter,
   },
   fab: {
@@ -23,17 +23,17 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const classes = useStyles();
-  const {isChatOpen} = useApp();
+  const { isChatOpen } = useApp();
   const isTabletOrMobileDevice = useMediaQuery({
     query: '(max-device-width: 1224px)'
   })
   return (
-    
+
     <div className={classes.root}>
       {isChatOpen && isTabletOrMobileDevice ? null : <Home />}
       {/* <Button>hello</Button> */}
 
-      {!isTabletOrMobileDevice ||isChatOpen ? <Chat></Chat> : null}
+      {!isTabletOrMobileDevice || isChatOpen ? <Chat></Chat> : null}
 
     </div>
   );
