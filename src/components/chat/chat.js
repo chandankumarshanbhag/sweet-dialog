@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Chat({ isChatbot = true, message }) {
+export default function Chat({ isChatbot = true, message, timestamp }) {
     const classes = useStyles();
     const { user } = useApp();
 
@@ -38,7 +38,10 @@ export default function Chat({ isChatbot = true, message }) {
 
                     activityPersonas={[{ imageInitials: "SD", imageShouldFadeIn: true, ...!isChatbot ? { imageUrl: user.photoURL } : {} }]}
                     comments={message || ""}
-                    timeStamp={'23m ago'} />
+                    timeStamp={timestamp && typeof timestamp == "object" && Intl?.DateTimeFormat('default', {
+                        hour: 'numeric', minute: 'numeric',
+                        hourCycle: 'h12',
+                    })?.format(timestamp)?.toUpperCase()} />
             </div>
         </div>
     )

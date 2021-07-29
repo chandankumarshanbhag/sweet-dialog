@@ -13,11 +13,9 @@ export function AppProvider(props) {
         }
     ]);
 
-    function addChat(chat) {
-        let chats = [...conversations, chat];
-        setConversations(chats);
-        console.log(chats);
-
+    const addChat = (chat) => {
+        conversations.push(chat)
+        setConversations([...conversations]);
     }
 
     function logOut() {

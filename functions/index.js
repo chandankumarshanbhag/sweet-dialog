@@ -10,9 +10,9 @@ const { executeQueries } = require('./dialogflow')
 
 exports.sweetDialogBot = functions.https.onRequest((request, response) => {
     return cors(request, response, async () => {
-        let { message, sessionId } = request.body || request.query;
+        let { message, sessionId, languageCode } = request.body || request.query;
         try {
-            let result = await executeQueries('sweet-dialog', sessionId, message, "en-IN");
+            let result = await executeQueries('sweet-dialog', sessionId, message, languageCode || "en-IN");
             response.send(result.toString());
         } catch (e) {
             response.send(e.toString());

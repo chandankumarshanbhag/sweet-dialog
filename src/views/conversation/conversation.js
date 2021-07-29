@@ -78,6 +78,7 @@ export default function Conversation() {
     async function sendMessage() {
 
         if (message) {
+            setMessage("");
             addChat({
                 message: message,
                 isChatbot: false,
@@ -90,8 +91,8 @@ export default function Conversation() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "message": "hello",
-                    "sessionId": "abc123"
+                    "message": message,
+                    "sessionId": user.email
                 })
             })
                 .then(res => {
@@ -114,7 +115,7 @@ export default function Conversation() {
             <Navbar />
             <div className={classes.chats}>
                 {user == null ? <GoogleSignin /> : <div>
-                    {conversations?.map((x, key) => <Chat {...x} key={x.timestamp.toString()} />)}
+                    {conversations?.map((x, key) => <Chat {...x} key={x.timestamp.valueOf()} />)}
                 </div>}
 
             </div>
